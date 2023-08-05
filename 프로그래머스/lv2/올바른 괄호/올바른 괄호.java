@@ -15,7 +15,7 @@ class Solution {
                 que.add(s.charAt(i)); // (면 add
             }
             else{
-                if (que.size()==0) {
+                if (que.size()==0) { //다 0이 되면 안됨
                     return false;}
                 que.poll(); //)면 삭제
             }            
