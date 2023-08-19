@@ -16,7 +16,7 @@ class Solution {
 					sum += truck;
 					time++; // 다리에 오를 때만 시간 추가 
 					break;
-				} else if(queue.size() == bridge_length) { // 큐에 다리 길이만큼 트럭이 다 찬 경우 
+				} else if(queue.size() == bridge_length) { // 다리가 꽉 참
 					sum -= queue.poll();
 				} else  { // 다리 길이만큼 큐가 차지않았음
 					// weight 값을 넘지 않는 선에서 새로운 트럭을 다리에 올려줌 
