@@ -9,7 +9,7 @@ class Solution {
         // int 변환해서 숫자 순서대로 sort 후에 다시 string 변환해서 비교? 
         // or if로 두 string의 길이 비교해서 진행하기-> 이렇게 하자
         // 모든 곳을 다 조회해봐야함. -> i+1이면 그냥 두개의 수끼리만 비교함. 
-        
+        // ..
         Arrays.sort(phone_book); //길이대로 정렬하기 
         
         for (int i = 0; i<phone_book.length-1; i++){
