@@ -1,5 +1,5 @@
 class Solution {
-    
+    // public으로 선언
     public static boolean visit[];
     public int answer = 99999;
     public int solution(String begin, String target, String[] words) {
