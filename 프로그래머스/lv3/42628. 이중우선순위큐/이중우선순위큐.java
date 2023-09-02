@@ -1,4 +1,4 @@
-import java.util.*; // import
+import java.util.*; 
 
 class Solution {
     public int[] solution(String[] operations) {
