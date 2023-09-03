@@ -1,5 +1,5 @@
 class Solution {
-	static boolean visit[];
+	static boolean visit[];//방문여부
 
 	public int solution(int n, int[][] computers) {
         int answer = 0;
