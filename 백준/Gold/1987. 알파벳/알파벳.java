@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
     public static int r,c;
     public static HashSet<Character> hs = new HashSet<>();
     public static char map[][];
@@ -15,22 +14,25 @@ public class Main {
     }
 
     public static void dfs(int x, int y, int depth){
-        boolean moved = false;
+//        boolean moved = false;
+
+        max = Math.max(max, depth);
+        
         // 상하좌우 탐색 & 재귀
         for (int i = 0; i < 4; i++){
             int nx = x + dx[i];
             int ny = y + dy[i];
 
             if (inRange(nx,ny) && !hs.contains(map[nx][ny])){// 이동 가능하다면
-                moved = true;
+                //moved = true;
                 hs.add(map[nx][ny]);
                 dfs(nx,ny,depth+1);
                 hs.remove(map[nx][ny]);
             }
 
-            if(!moved){ // 더 이상 이동 불가한 경우, 해당 경로까지의 값을 기준으로 최댓값 업데이트
-                max = Math.max(max, depth);
-            }
+//            if(!moved){ // 더 이상 이동 불가한 경우, 해당 경로까지의 값을 기준으로 최댓값 업데이트
+//                max = Math.max(max, depth);
+//            }
         }
 
     }
