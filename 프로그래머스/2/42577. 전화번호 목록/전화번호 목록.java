@@ -1,24 +1,18 @@
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 class Solution {
-        public static boolean solution(String[] phone_book) {
-        // 작은 수 순서대로 검사하기 -> String start..? 함수사용
-        // 끝까지 검사했는데 없으면 true
-
+    public boolean solution(String[] phone_book) {
+        
+        
+        // 오름차순 정렬 안하면 시간 초과 -> 오름차순 정렬안하면 n^2 만큼 다 탐색해야하지만, 정렬하면 탐색 범위 좁힐 수 있다. 
+        // 접두어 찾을 때 11 , 119, 129로 정렬되면, 순서대로 탐색하면서 접두어 빨리 찾을 수 있다. 
+        
         Arrays.sort(phone_book);
-        //System.out.println(Arrays.toString(phone_book));
-        // 작은 순으로 나열
-        //Arrays.sort(phone_book, Comparator.comparing(String::length));
-        //System.out.println(Arrays.toString(phone_book));
-
-
-        // 작은 수 뒤에있는 값만 비교하기
+        
         for (int i = 0; i < phone_book.length-1; i++){
-            if(phone_book[i+1].startsWith(phone_book[i])) return false;
-//            for (int j = i+1; j < phone_book.length; j++){
-//                if(phone_book[j].startsWith(phone_book[i])) return false;
-//            }
+                
+           if(phone_book[i+1].startsWith(phone_book[i])) return false;
+            
         }
         return true;
     }
