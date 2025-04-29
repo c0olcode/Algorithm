@@ -2,56 +2,59 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
+        HashMap<String, HashMap<Integer, Integer>> ganre_info = new HashMap<>(); //각 장르별 세부 곡정보(인덱스, 재생횟수)
+        HashMap<String, Integer> full_count = new HashMap<>(); //장르별 총 재생횟수
         
-        // 1. 해시맵으로 가장 많이 재생된 장르 찾기 -> 해시맵 full_count
-        // 2. 장르별로 가장 많이 재생된 노래 2개 찾기 -> 해시맵 
-        
-        HashMap<String, Integer> full_count = new HashMap<>();
-        HashMap<String, HashMap<Integer,Integer>> playlist = new HashMap<>();
-        ArrayList<Integer> answer = new ArrayList<>(); //정답 담을 리스트
-        
+        // 1. for문 돌며 fullcount, ganreinfo 채우기
         for (int i = 0; i < genres.length; i++){
-            String genre = genres[i];
-            full_count.put(genre, full_count.getOrDefault(genre,0) + plays[i]); //총 재생횟수
-            // 이미 장르 키값 있으면 -> 불러온 다음에 put
-            // 장르 키값 없으면 -> 새로 넣기
-            if (playlist.containsKey(genre)){
-                (playlist.get(genre)).put(i,plays[i]); // 이게 되네... 
-                
-            }else{
-                HashMap<Integer, Integer> hm = new HashMap<>();
+            // 1-1. fullcount 채우기
+            // genres[i]에 있는 값이 fullcount에 넣기 (getOrDefault)
+            int sum = full_count.getOrDefault(genres[i],0);
+            full_count.put(genres[i],sum+plays[i]);
+            
+            // 1-2. ganre_info 채우기
+            // 기존 값 있으면 hm 꺼내서 세부 곡정보 추가하기
+            if(ganre_info.containsKey(genres[i])){
+                (ganre_info.get(genres[i])).put(i,plays[i]);
+            }
+            // 기존 값 없으면 hm 새로 생성 후에 세부 곡정보 추가하기
+            else{
+                HashMap<Integer,Integer> hm = new HashMap<>();
                 hm.put(i,plays[i]);
-                playlist.put(genre,hm);
+                ganre_info.put(genres[i],hm);
             }
         }
         
-        // hm을 value 기준으로 내림차순 정렬하기
-        ArrayList<String> genre_list = new ArrayList<>();
-        for (String key : full_count.keySet()){
-            genre_list.add(key);
+        // 2. list에 총 재생횟수 순서대로 정렬하기
+        ArrayList<String> genre_sort = new ArrayList<>();
+        for (String genre : full_count.keySet()){
+            genre_sort.add(genre);
         }
-        genre_list.sort((x,y) -> full_count.get(y) - full_count.get(x)); // 리스트 정렬하여서 재생 많이된 순으로 장르 정렬함. 
+        Collections.sort(genre_sort, (x,y) -> full_count.get(y) - full_count.get(x));
         
-        // 장르별로 가장 많이 재생된 노래 2개 찾기
-        for (int i = 0; i< genre_list.size(); i++){
-            String genre = genre_list.get(i); // 장르 가져오기
-            
-            // 해시맵에서 장르에 해당하는 해시맵 가져오기
-            HashMap<Integer, Integer> hm = playlist.get(genre); 
-            
-            // 불러온 해시맵을 재생수(value) 기준으로 내림차순 정렬
+        // 3. 각 장르별 top2 뽑아내기
+        ArrayList<Integer> answer = new ArrayList<>();
+        for (String genre:genre_sort){
+            HashMap<Integer, Integer> hm = ganre_info.get(genre);
             ArrayList<Integer> list = new ArrayList<>();
-            for (Integer num : hm.keySet()){
-                list.add(num); //고유번호 다 리스트에 넣고 이후에 내림차순 정렬
+            for (Integer index : hm.keySet()){
+                list.add(index);
             }
-            Collections.sort(list, (s1, s2) -> hm.get(s2) - hm.get(s1)); //내림차순 정렬
+            // 재생순서대로 정렬하기
+            Collections.sort(list, (x,y) -> hm.get(y) - hm.get(x));
             
-            // 상위 2개를 answer list에 담는다.
-            answer.add(list.get(0));
-            if (list.size()>1) answer.add(list.get(1));
+            for (int i = 0; i < 2; i++){
+                answer.add(list.get(i));
+                if(list.size() <= 1) break;
+            }
         }
         
-        // list를 배열로 변환하여 return
-        return answer.stream().mapToInt(x->x).toArray();
+        // 4. 배열로 변환
+        int ans[] = new int[answer.size()];
+        for (int i = 0; i < answer.size(); i++){
+            ans[i] = answer.get(i);
+        }
+        
+        return ans;
     }
 }
