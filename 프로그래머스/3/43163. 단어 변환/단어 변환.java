@@ -1,56 +1,60 @@
 import java.util.*;
 
 class Solution {
+    public int n;
+    public String t;
+    public int answer = Integer.MAX_VALUE;
+    public boolean visit[];
     
-    public static boolean success;
-    public static boolean visit[];
-    public static int answer = Integer.MAX_VALUE;
+    public boolean compare(String begin, String word){
+        int cnt = 0;
+        for (int i = 0; i < begin.length(); i++){
+            if (begin.charAt(i) == word.charAt(i)) cnt++;
+        }
+        
+        if (cnt == begin.length()-1) return true;
+        return false;
+    }
     
-    public static void dfs(int cnt, int index, String target, String[] words){
-        if (target.equals(words[index])){ // 일치한다면
-            // 최솟값 업데이트 
-            answer = Math.min(answer, cnt);
-            success = true;
+    public void dfs(int index, int cnt, String begin, String[] words){
+        if (begin.equals(t)){
+            answer = Math.min(answer,cnt);
             return;
         }
-        if (cnt == words.length) return;
         
-        for (int i = 0; i < words.length; i++){
-            // begin과 비교하여 한글자만 다르다면 dfs
-            if(!visit[i] && compare(words[index], words[i]) == 1){
+        for (int i = 0; i < n; i++){
+            if (!visit[i] && compare(begin, words[i])){
                 visit[i] = true;
-                dfs(cnt+1, i, target, words);
+                dfs(i, cnt+1, words[i], words);
                 visit[i] = false;
             }
         }
-        
-    }
-    
-    public static int compare(String s1, String s2){
-        int cnt = 0;
-        
-        for (int i = 0; i < s1.length(); i++){
-            if(s1.charAt(i) != s2.charAt(i)) cnt++;
-        }
-        
-        return cnt;
     }
     
     public int solution(String begin, String target, String[] words) {
+        n = words.length;
+        t = target;
+        visit = new boolean[n];
         
-        visit = new boolean[words.length];
         
-        for (int i = 0; i < words.length; i++){
-            // begin과 비교하여 한글자만 다르다면 dfs
-            if(compare(begin, words[i]) == 1){
-                visit[i] = true;
-                dfs(1, i, target, words);
-                visit[i] = false;
+        // 변환 못하는 경우
+        boolean check = false;
+        for (int i = 0; i < n; i++){
+            if (words[i].equals(target)) {
+                check = true;
+                break;
             }
         }
+        if (!check) return 0;
         
-        if(!success) return 0;
+        for (int i = 0; i < n; i++){
+            visit[i] = true;
+            dfs(i,0,begin,words);
+            visit[i] = false;
+        }
         
-        else return answer;
+        
+        
+        return answer;
     }
 }
